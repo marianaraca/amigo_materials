@@ -1,0 +1,8 @@
+payer_type,tier,accounts,total_balance
+Insurance,Formal Appeal / Payer Escalation,3,7730.25
+Insurance,Escalate / Request EOB,1,3200.0
+Insurance,Within Normal Processing,2,2170.0
+Insurance,Claim Status Check,1,1890.0
+Patient,Refer to Collections,3,1970.5
+Patient,Friendly Reminder,4,839.5
+Patient,Pre-Collections Notice,1,540.75

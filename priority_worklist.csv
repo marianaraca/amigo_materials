@@ -1,0 +1,16 @@
+account_id,patient_name,payer_type,payer_name,balance,days_overdue,tier,priority_score
+A1012,Carlos Rivas,Insurance,UnitedHealthcare,4100.0,137,Formal Appeal / Payer Escalation,22823.33
+A1008,Thomas Reyes,Insurance,Aetna,2650.0,111,Formal Appeal / Payer Escalation,12455.0
+A1004,Robert Nguyen,Insurance,UnitedHealthcare,3200.0,60,Escalate / Request EOB,9600.0
+A1007,Susan Malik,Patient,Self-Pay,1200.0,108,Refer to Collections,5520.0
+A1014,George Hassan,Insurance,Cigna,1890.0,42,Claim Status Check,4536.0
+A1006,David Kim,Insurance,Cigna,980.25,73,Formal Appeal / Payer Escalation,3365.52
+A1013,Emily Zhao,Patient,Self-Pay,675.0,117,Refer to Collections,3307.5
+A1002,James Whitfield,Insurance,Aetna,1420.0,22,Within Normal Processing,2461.33
+A1005,Angela Torres,Patient,Self-Pay,540.75,63,Pre-Collections Notice,1676.33
+A1010,Michael Osei,Insurance,Humana,750.0,-4,Within Normal Processing,750.0
+A1011,Patricia Wells,Patient,Self-Pay,95.5,158,Refer to Collections,598.47
+A1009,Grace Lin,Patient,Self-Pay,315.0,23,Friendly Reminder,556.5
+A1001,Maria Gonzalez,Patient,Self-Pay,215.5,16,Friendly Reminder,330.43
+A1015,Nadia Farouk,Patient,Self-Pay,220.0,2,Friendly Reminder,234.67
+A1003,Linda Park,Patient,Self-Pay,89.0,7,Friendly Reminder,109.77
