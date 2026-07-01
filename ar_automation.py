@@ -1,45 +1,28 @@
 """
-AR Automation Prototype
-------------------------
-A rules-based system that automates the core loop of a generic Accounts
-Receivable (AR) process for a healthcare provider:
+AR Automation Prototype 
 
+Steps:
     1. Ingest an AR aging file (patient balances + insurance claims)
-    2. Classify each account into an aging bucket and escalation tier
+    2. Classify each account into an aging bucket
     3. Score & rank accounts by collection priority (expected $ recoverable
        per unit of effort, adjusted for how stale the claim is)
     4. Auto-draft the appropriate outreach (patient reminder, payer
-       follow-up, appeal request, or collections referral)
+       follow-up, appeal request, etc)
     5. Output a summary report + a prioritized worklist + individual
-       email drafts, so a human just has to review and hit send
-
-Design choice: patient balances and insurance claims are escalated on
-DIFFERENT tracks, because they behave differently in the real world —
-insurance claims need payer follow-up / appeals, while patient balances
-need reminders and payment plan offers. Treating them identically is a
-common (and costly) mistake in naive AR automation.
-
-Author: Marianne Ramirez Cabal
+       email drafts, so a human just has to review and send 
 """
 
 import pandas as pd
 from datetime import datetime
 from pathlib import Path
 
-# ---------------------------------------------------------------------------
-# Config
-# ---------------------------------------------------------------------------
-
-AS_OF_DATE = datetime(2026, 7, 1)  # "today" for aging calculations
+AS_OF_DATE = datetime(2026, 7, 1)  # today 
 INPUT_FILE = "sample_ar_data.csv"
 OUTPUT_DIR = Path("output")
 EMAIL_DIR = OUTPUT_DIR / "generated_emails"
 
-# ---------------------------------------------------------------------------
-# Escalation rules
-# ---------------------------------------------------------------------------
 # Each rule set maps a range of days-overdue to a (tier_label, email_template_key)
-# Patient and Insurance accounts use different rule sets on purpose.
+# Patient and Insurance accounts use different rule sets
 
 PATIENT_RULES = [
     (float("-inf"), 30, "Friendly Reminder", "patient_reminder"),
@@ -94,7 +77,7 @@ EMAIL_TEMPLATES = {
         "referred to a third-party collections agency.\n\n"
         "Billing Team"
     ),
-    "insurance_none": None,  # not actionable yet, no email generated
+    "insurance_none": None,  
     "insurance_status_check": (
         "Subject: Claim Status Inquiry — Account {account_id}\n\n"
         "Hello {payer_name} Claims Team,\n\n"
@@ -128,7 +111,6 @@ EMAIL_TEMPLATES = {
 
 
 def classify(days_overdue: int, rules: list) -> tuple[str, str]:
-    """Map days_overdue to (tier_label, template_key) using the given rule set."""
     for low, high, tier, template_key in rules:
         if low <= days_overdue <= high:
             return tier, template_key
@@ -137,10 +119,8 @@ def classify(days_overdue: int, rules: list) -> tuple[str, str]:
 
 def priority_score(balance: float, days_overdue: int) -> float:
     """
-    Simple prioritization heuristic: dollars at stake, weighted up as an
-    account gets older (because the probability of ever collecting decays
-    over time — a $1 today is worth more in expectation than a $1 you
-    might collect after 6 months of chasing).
+    dollars at stake, weighted up as an
+    account gets older
     """
     urgency_weight = 1 + (max(days_overdue, 0) / 30)
     return round(balance * urgency_weight, 2)
@@ -190,7 +170,7 @@ def run():
     ]
     worklist.to_csv(OUTPUT_DIR / "priority_worklist.csv", index=False)
 
-    # --- Summary: totals by payer_type + tier ---
+    # Summary
     summary = (
         df.groupby(["payer_type", "tier"])
         .agg(accounts=("account_id", "count"), total_balance=("balance", "sum"))
@@ -199,7 +179,6 @@ def run():
     )
     summary.to_csv(OUTPUT_DIR / "ar_summary_report.csv", index=False)
 
-    # --- Emails: one .txt file per actionable account ---
     emails_generated = 0
     for _, row in df.iterrows():
         if isinstance(row["drafted_email"], str):
@@ -208,7 +187,6 @@ def run():
             filename.write_text(row["drafted_email"])
             emails_generated += 1
 
-    # --- Console summary ---
     print("=" * 70)
     print(f"AR AUTOMATION RUN — as of {AS_OF_DATE.date()}")
     print("=" * 70)
