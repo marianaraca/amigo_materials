@@ -18,7 +18,7 @@ appropriate outreach. This is so a human can just review and hit send.
 5. **Output** — writes a summary report.
 
 ## Tools used
-- I asked Claude to generate some fake data to work with
 - I used python and pandas for data cleaning
 - Plain string templates for email drafting 
 - Output to CSV and text files 
+- I asked Claude to generate some fake data to test it on
