@@ -1,4 +1,4 @@
-# AR Automation Prototype — Write-Up
+# AR Automation Prototype 
 
 ## What it does
 A rules-based Python engine that automates the core loop of a generic
@@ -33,12 +33,9 @@ running two distinct rule sets.
    actionable account.
 
 ## Tools used
-- **Python 3** with **pandas** for data ingestion, date math, and
-  aggregation
-- Plain string templates for email drafting (no LLM dependency — kept it
-  deterministic and auditable, since in a real healthcare RCM context you'd
-  want every auto-generated communication to be traceable to a fixed rule,
-  not a black box)
+- I asked Claude to generate some fake data to work with
+- I used python and pandas for data cleaning
+- Plain string templates for email drafting (no LLM dependency)
 - Output to CSV + flat text files so it's easy to plug into any CRM,
   spreadsheet, or ticketing system as a next step
 
